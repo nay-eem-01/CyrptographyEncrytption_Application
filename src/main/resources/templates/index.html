@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Encryption & Decryption Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result-container {
+            width: 100%;
+            max-width: 90%;
+            margin: 20px auto;
+            word-wrap: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<h1>Text Encryption & Decryption Tool</h1>
+
+<!-- Form with Encrypt and Decrypt buttons -->
+<form th:action="@{/crypto/project/app}" th:object="${dataForm}" method="post">
+    <label for="algorithm">Algorithm:</label>
+    <select id="algorithm" name="algorithm" th:field="*{algorithm}" required>
+        <option value="">Select an Algorithm</option>
+        <option value="RSA">RSA</option>
+        <option value="AES">AES</option>
+        <option value="MonoAlphabetic">MonoAlphabetic</option>
+        <option value="MonoNumeric">MonoNumeric</option>
+    </select>
+
+    <label for="plainText">Plain Text:</label>
+    <input type="text" id="plainText" name="plainText" th:field="*{plainText}"
+           placeholder="Enter text for encryption" aria-label="Enter plain text" />
+
+    <label for="cipherText">Cipher Text:</label>
+    <input type="text" id="cipherText" name="cipherText" th:field="*{cipherText}"
+           placeholder="Enter text for decryption" aria-label="Enter cipher text" />
+
+    <!-- Buttons -->
+    <div class="button-container">
+        <button type="submit" name="action" value="Encrypt">Encrypt</button>
+        <button type="submit" name="action" value="Decrypt">Decrypt</button>
+    </div>
+</form>
+
+<h2 th:align="center">Result:</h2>
+<div class="result-container" th:if="${dataForm.cipherText != null}">
+    <p>Result: <b th:text="${dataForm.cipherText}"></b></p>
+</div>
+
+</body>
+</html>
