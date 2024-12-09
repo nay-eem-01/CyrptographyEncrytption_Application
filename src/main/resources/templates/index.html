@@ -73,7 +73,32 @@
             background-color: #f9f9f9;
             font-size: 16px;
         }
+
+        /* Hide key input field initially */
+        #keyField {
+            display: none;
+        }
+
+        /* Padding for AES Key section */
+        #keyField label {
+            margin-bottom: 10px; /* Adding padding below the label */
+        }
+        #keyField input {
+            margin-bottom: 12px; /* Adding padding below the label and input */
+        }
     </style>
+    <script>
+        function toggleKeyField() {
+            var algorithm = document.getElementById('algorithm').value;
+            var keyField = document.getElementById('keyField');
+
+            if (algorithm === 'AES') {
+                keyField.style.display = 'block';
+            } else {
+                keyField.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>
 <h1>Text Encryption & Decryption Tool</h1>
@@ -81,7 +106,7 @@
 <!-- Form with Encrypt and Decrypt buttons -->
 <form th:action="@{/crypto/project/app}" th:object="${dataForm}" method="post">
     <label for="algorithm">Algorithm:</label>
-    <select id="algorithm" name="algorithm" th:field="*{algorithm}" required>
+    <select id="algorithm" name="algorithm" th:field="*{algorithm}" required onchange="toggleKeyField()">
         <option value="">Select an Algorithm</option>
         <option value="RSA">RSA</option>
         <option value="AES">AES</option>
@@ -96,6 +121,13 @@
     <label for="cipherText">Cipher Text:</label>
     <input type="text" id="cipherText" name="cipherText" th:field="*{cipherText}"
            placeholder="Enter text for decryption" aria-label="Enter cipher text" />
+
+    <!-- AES Key Field -->
+    <div id="keyField">
+        <label for="key">AES Key (16, 24, or 32 characters):</label>
+        <input type="text" id="key" name="key" th:field="*{key}" placeholder="Enter AES key" />
+    </div>
+
 
     <!-- Buttons -->
     <div class="button-container">

@@ -13,6 +13,5 @@ public class DataForm {
     private String algorithm;
     private String plainText;
     private String cipherText;
-    private String encrypt;
-    private String decrypt;
+    private String key;
 }

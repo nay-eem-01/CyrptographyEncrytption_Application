@@ -1,6 +1,7 @@
 package com.practice.dataencryptionapplication.Controller;
 
 import com.practice.dataencryptionapplication.Model.DataForm;
+import com.practice.dataencryptionapplication.Service.AESEncryptionService;
 import com.practice.dataencryptionapplication.Service.MonoAlphabeticEncryptionService;
 import com.practice.dataencryptionapplication.Service.MonoNumericEncryptionService;
 import com.practice.dataencryptionapplication.Service.RSAEncryptionService;
@@ -15,13 +16,16 @@ public class EncryptionController {
     private final RSAEncryptionService rsaEncryptionService;
     private final MonoAlphabeticEncryptionService monoAlphabeticEncryption;
     private final MonoNumericEncryptionService monoNumericEncryption;
+    private final AESEncryptionService aesEncryptionService;
     private final DataForm dataForm;
 
 
-    public EncryptionController(RSAEncryptionService rsaEncryptionService, MonoAlphabeticEncryptionService monoAlphabeticEncryption, MonoNumericEncryptionService monoNumericEncryption, DataForm dataForm) {
+
+    public EncryptionController(RSAEncryptionService rsaEncryptionService, MonoAlphabeticEncryptionService monoAlphabeticEncryption, MonoNumericEncryptionService monoNumericEncryption, AESEncryptionService aesEncryptionService, DataForm dataForm) {
         this.rsaEncryptionService = rsaEncryptionService;
         this.monoAlphabeticEncryption = monoAlphabeticEncryption;
         this.monoNumericEncryption = monoNumericEncryption;
+        this.aesEncryptionService = aesEncryptionService;
         this.dataForm = dataForm;
     }
 
@@ -43,6 +47,9 @@ public class EncryptionController {
                     case "RSA":
                         result = rsaEncryptionService.RSA(dataForm.getPlainText(), "Encrypt");
                         break;
+                    case "AES":
+                        result = aesEncryptionService.encrypt(dataForm.getPlainText(), dataForm.getKey());
+                        break;
                     case "MONOALPHABETIC":
                         result = monoAlphabeticEncryption.monoAlphabeticEncryption(dataForm.getPlainText(), "Encrypt");
                         break;
@@ -59,11 +66,14 @@ public class EncryptionController {
                     case "RSA":
                         result = rsaEncryptionService.RSA(dataForm.getPlainText(), "Decrypt");
                         break;
+                    case "AES":
+                        result = aesEncryptionService.decrypt(dataForm.getCipherText(), dataForm.getKey());
+                        break;
                     case "MONOALPHABETIC":
                         result = monoAlphabeticEncryption.monoAlphabeticEncryption(dataForm.getPlainText(), "Decrypt");
                         break;
                     case "MONONUMERIC":
-                        result = monoNumericEncryption.monoNumericEncryption(dataForm.getPlainText(), "Decrypt");
+                        result = monoNumericEncryption.monoNumericEncryption(dataForm.getCipherText(), "Decrypt");
                         break;
                     default:
                         result = "Decryption not implemented for " + algorithm;
